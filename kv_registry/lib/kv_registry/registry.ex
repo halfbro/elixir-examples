@@ -2,8 +2,6 @@ defmodule KVRegistry.Registry do
   @moduledoc """
   A registry where we can interface with lots of buckets
   """
-  # TODO: Fix bug where a bucket crashing can take down
-  #       the whole registry
   use GenServer
 
   ## Client API
@@ -40,7 +38,7 @@ defmodule KVRegistry.Registry do
     if Map.has_key?(names, name) do
       {:noreply, {names, refs}}
     else
-      {:ok, bucket} = KVRegistry.Bucket.new_bucket([])
+      {:ok, bucket} = DynamicSupervisor.start_child(KVRegistry.BucketSupervisor, KVRegistry.Bucket)
       ref = Process.monitor(bucket)
       refs = Map.put(refs, ref, name)
       names = Map.put(names, name, bucket)

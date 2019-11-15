@@ -4,9 +4,9 @@ defmodule KVRegistry.Bucket do
   as a building block to build our KV registry.
   """
 
-  use Agent
+  use Agent, restart: :temporary
 
-  def new_bucket(_opts) do
+  def start_link(_opts) do
     Agent.start_link(fn -> %{} end)
   end
 
