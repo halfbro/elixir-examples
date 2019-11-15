@@ -1,18 +1,8 @@
 defmodule KVRegistry do
-  @moduledoc """
-  Documentation for KVRegistry.
-  """
+  use Application
 
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> KVRegistry.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  @impl true
+  def start(_type, _args) do
+    KVRegistry.Supervisor.start_link(name: KVRegistry.Supervisor)
   end
 end
